@@ -12,7 +12,7 @@ process.on('uncaughtException', error => {
 
 
 //setting up config files
-if(process.env.NODE_ENV === 'PRODUCTION') require('dotenv').config({path: 'backend/config/config.env'})
+if(process.env.NODE_ENV !== 'PRODUCTION') require('dotenv').config({path: 'backend/config/config.env'})
 
 // setting up cloudinary config
 cloudinary.config({

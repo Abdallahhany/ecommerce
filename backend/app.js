@@ -4,7 +4,7 @@ const errorMiddleware = require('./middelwares/errors');
 const cookieParser = require('cookie-parser');
 // const dotenv = require('dotenv');
 //setting up config files
-if(process.env.NODE_ENV === 'PRODUCTION') require('dotenv').config({path: 'backend/config/config.env'})
+if(process.env.NODE_ENV !== 'PRODUCTION') require('dotenv').config({path: 'backend/config/config.env'})
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload')
 const path = require("path");
