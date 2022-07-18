@@ -155,7 +155,8 @@ export const newProductReducer = (state = {product: {}}, action) => {
         case NEW_PRODUCT_FAIL:
             return {
                 ...state,
-                error: action.payload
+                error: action.payload,
+                loading: false
             }
 
         case NEW_PRODUCT_RESET:
@@ -167,7 +168,8 @@ export const newProductReducer = (state = {product: {}}, action) => {
         case CLEAR_ERRORS:
             return {
                 ...state,
-                error: null
+                error: null,
+                loading: false
             }
 
         default:

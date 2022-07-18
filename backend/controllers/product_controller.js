@@ -7,7 +7,8 @@ const cloudinary = require('cloudinary').v2;
 
 
 //create New Product => /api/v1/admin/product/new
-exports.newProduct = catchAsyncErrors(async (req, res) => {
+exports.newProduct = catchAsyncErrors(async (req, res, next) => {
+
     try {
         let images = []
         if (typeof req.body.images === 'string') {
@@ -39,7 +40,11 @@ exports.newProduct = catchAsyncErrors(async (req, res) => {
             product
         })
     } catch (e) {
-        console.log(e)
+        console.log(e.message)
+        if (e.message === 'Cannot read property \'length\' of undefined'){
+           return next(new ErrorHandler('Please Fill All Fields', 400));
+        }
+        return next(new ErrorHandler(e.message.split('Product validation failed:')[1], 400));
     }
 
 
@@ -48,8 +53,8 @@ exports.newProduct = catchAsyncErrors(async (req, res) => {
 //Get All Products => /api/v1/products
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
     const resPerPage = 4;
-    // later for the frontend
     const productsCount = await Product.countDocuments();
+
     const apiFeatures = new APIFeatures(Product.find(), req.query)
         .search()
         .filter()
@@ -57,13 +62,13 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
     let products = await apiFeatures.query;
     let filteredProductsCount = products.length;
 
-    apiFeatures.pagination(resPerPage);
-    products = await apiFeatures.query;
+    apiFeatures.pagination(resPerPage)
+    products = await apiFeatures.query.clone();
 
 
-    return res.status(200).json({
+    res.status(200).json({
         success: true,
-        productsCount: productsCount,
+        productsCount,
         resPerPage,
         filteredProductsCount,
         products

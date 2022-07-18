@@ -86,7 +86,6 @@ const Register = ({history}) => {
                         <div className="form-group">
                             <label htmlFor="email_field">Email</label>
                             <input
-                                type="email"
                                 id="email_field"
                                 className="form-control"
                                 name='email'

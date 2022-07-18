@@ -6,8 +6,19 @@ const sendEmail = require('../utils/send_email');
 const crypto = require('crypto');
 const cloudinary = require('cloudinary').v2;
 
-exports.registerUser = catchAsyncErrors(async (req, res) => {
+exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     const {name, email, password} = req.body;
+
+    const checkUser = await User.findOne({email});
+
+    if(checkUser){
+        return next(new ErrorHandler('User validation failed: email: User with That Email Already Exists', 401));
+    }
+
+    if(!req.body.avatar){
+        return next(new ErrorHandler('User validation failed: avatar: Please Provide Your Image', 404));
+
+    }
 
     const result = await cloudinary.uploader.upload(req.body.avatar, {
         folder: 'ecommerce/avatars',
@@ -26,7 +37,7 @@ exports.registerUser = catchAsyncErrors(async (req, res) => {
     sendToken(user, 200, res);
 })
 
-// Login User  =>  /a[i/v1/login
+// Login User  =>  /api/v1/login
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
     const {email, password} = req.body;
 

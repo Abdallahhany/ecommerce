@@ -6,7 +6,7 @@ import MetaData from "../layouts/meta_data";
 import {login, clearErrors} from "../../actions/user_action";
 import {Link} from "react-router-dom";
 
-const Login = ({history,location}) => {
+const Login = ({history, location}) => {
     const dispatch = useDispatch();
     const Alert = useAlert();
     const [email, setEmail] = useState('');

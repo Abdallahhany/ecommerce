@@ -56,10 +56,9 @@ export const login = (email, password) => async (dispatch) => {
         })
 
     } catch (error) {
-        console.log(error.response)
         dispatch({
             type: LOGIN_FAIL,
-            payload: error.response.message
+            payload: error.response.data.message
         });
     }
 }
@@ -81,9 +80,11 @@ export const register = (userData) => async (dispatch) => {
         })
 
     } catch (error) {
+        console.log(error.response.data.message)
+
         dispatch({
             type: REGISTER_FAIL,
-            payload: error.response.data.message
+            payload: error.response.data.message.split(':')[2]
         });
     }
 }
@@ -101,7 +102,7 @@ export const loadUser = () => async (dispatch) => {
         })
 
     } catch (error) {
-        console.log(error.response)
+        // console.log(error.response)
         dispatch({
             type: LOAD_USER_FAIL,
             payload: error.response.data.message
